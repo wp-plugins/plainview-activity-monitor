@@ -1,0 +1,36 @@
+{
+	"name": "plainview/wp_activity_monitor",
+	"description": "Plainview Activity Monitor is a Wordpress plugin that monitors activity on a site or blog.",
+	"license" : "GPL-3.0",
+	"authors": [ {
+		"name": "Edward Plainview",
+		"email": "edward@plainview.se"
+	} ],
+	"require-dev": {
+		"php": ">=5.4.0",
+		"plainview/sdk": "dev-master"
+	},
+	"autoload":
+	{
+		"psr-4": {
+			"plainview\\wordpress\\activity_monitor\\" : "include"
+		}
+	},
+	"minimum-stability": "dev",
+	"repositories": [
+		{
+			"type": "package",
+			"package":
+			{
+				"name": "the-plainview/wp_activity_monitor",
+				"version": "master",
+				"source":
+				{
+					"url": "https://github.com/the-plainview/wp_activity_monitor.git",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		}
+	]
+}
