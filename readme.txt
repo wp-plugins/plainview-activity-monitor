@@ -97,6 +97,10 @@ No. PHP 5.4 is required and has been released long enough for hosts to have had 
 
 == Changelog ==
 
+= 20140520 =
+
+* Hooks are loaded after Wordpress has finished loading.
+
 = 20140511 =
 
 * Initial version.

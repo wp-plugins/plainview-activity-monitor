@@ -6,7 +6,7 @@ Author URI:		http://www.plainview.se
 Description:	Monitors activity on a site or blog.
 Plugin Name:	Plainview Activity Monitor
 Plugin URI:		http://plainview.se/wordpress/plainview-activity-monitor/
-Version:		20140511
+Version:		20140520
 */
 
 namespace plainview\wordpress\activity_monitor;
@@ -41,9 +41,7 @@ class Plainview_Activity_Monitor
 		$this->_database_construct();
 		$this->_hooks_construct();
 
-		// Tell everyone we're finished loading!
-		$action = new actions\loaded();
-		$action->execute();
+		$this->add_action( 'wp_loaded' );
 	}
 
 	// --------------------------------------------------------------------------------------------
@@ -102,6 +100,15 @@ class Plainview_Activity_Monitor
 		return $this->__cache;
 	}
 
+	public function wp_loaded()
+	{
+		// Tell everyone we're finished loading!
+		$action = new actions\loaded();
+		$action->execute();
+
+		// The above should have autoloaded any activity monitor related hooks. Now we can add them.
+		$this->add_hooks();
+	}
 }
 
 $Plainview_Activity_Monitor = new Plainview_Activity_Monitor();

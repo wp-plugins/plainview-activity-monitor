@@ -17,7 +17,6 @@ trait hooks
 	public function _hooks_construct()
 	{
 		$this->add_action( 'plainview_activity_monitor_manifest_hooks' );
-		$this->add_hooks();
 	}
 
 	/**
@@ -30,19 +29,12 @@ trait hooks
 		foreach( $this->get_logged_hooks() as $index => $classname )
 		{
 			if ( ! class_exists( $classname ) )
-			{
-				unset( $logged_hooks[ $index ] );
-				$resave = true;
 				continue;
-			}
 
 			$class = new $classname;
 			$class->register_with( $this->logged_hooks() );
 			$class->hook();
 		}
-
-		if ( $resave )
-			$this->logged_hooks()->save();
 	}
 
 	/**
