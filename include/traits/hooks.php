@@ -29,12 +29,19 @@ trait hooks
 		foreach( $this->get_logged_hooks() as $index => $classname )
 		{
 			if ( ! class_exists( $classname ) )
+			{
+				unset( $logged_hooks[ $index ] );
+				$resave = true;
 				continue;
+			}
 
 			$class = new $classname;
 			$class->register_with( $this->logged_hooks() );
 			$class->hook();
 		}
+
+		if ( $resave )
+			$this->logged_hooks()->save();
 	}
 
 	/**
