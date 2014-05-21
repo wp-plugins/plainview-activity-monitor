@@ -36,7 +36,7 @@ class cache
 
 		if ( ! $blogs->has( $blog_id ) )
 		{
-			if ( $this->am()->is_network )
+			if ( function_exists( 'switch_to_blog' ) )
 				switch_to_blog( $blog_id );
 			$blogname = get_bloginfo( 'blogname' );
 			if ( ! $blogname )
@@ -44,7 +44,7 @@ class cache
 			else
 			{
 				$blogname = sprintf( '<a href="%s">%s</a>', get_bloginfo( 'url' ), $blogname );
-				if ( $this->am()->is_network )
+				if ( function_exists( 'switch_to_blog' ) )
 					restore_current_blog();
 			}
 			$blogs->set( $blog_id, $blogname );
