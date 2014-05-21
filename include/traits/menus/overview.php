@@ -185,12 +185,16 @@ trait overview
 		$blog_options = [];
 		foreach( $list_distinct_values->as_options( 'blog_ids' ) as $blog_id )
 		{
-			switch_to_blog( $blog_id );
+			if ( $this->is_network )
+				switch_to_blog( $blog_id );
 			$blog_name = get_bloginfo( 'blogname' );
 			if ( ! $blog_name )
 				$blog_name = $blog_id . ' (deleted)';
 			else
-				restore_current_blog();
+			{
+				if ( $this->is_network )
+					restore_current_blog();
+			}
 			$blog_options[ $blog_name ] = $blog_id;
 		}
 		ksort( $blog_options );

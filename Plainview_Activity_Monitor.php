@@ -6,7 +6,7 @@ Author URI:		http://www.plainview.se
 Description:	Monitors activity on a site or blog.
 Plugin Name:	Plainview Activity Monitor
 Plugin URI:		http://plainview.se/wordpress/plainview-activity-monitor/
-Version:		20140520
+Version:		20140521
 */
 
 namespace plainview\wordpress\activity_monitor;

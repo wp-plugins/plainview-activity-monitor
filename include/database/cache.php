@@ -36,13 +36,17 @@ class cache
 
 		if ( ! $blogs->has( $blog_id ) )
 		{
-			switch_to_blog( $blog_id );
+			if ( $this->am()->is_network )
+				switch_to_blog( $blog_id );
 			$blogname = get_bloginfo( 'blogname' );
 			if ( ! $blogname )
 				$blogname = $this->am()->_( 'Deleted blog %s', $blog_id );
 			else
+			{
 				$blogname = sprintf( '<a href="%s">%s</a>', get_bloginfo( 'url' ), $blogname );
-			restore_current_blog();
+				if ( $this->am()->is_network )
+					restore_current_blog();
+			}
 			$blogs->set( $blog_id, $blogname );
 		}
 
