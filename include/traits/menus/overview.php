@@ -20,6 +20,7 @@ trait overview
 		$form = $this->form2();
 		$r = '';
 		$table = $this->table();
+		$table->css_class( 'activity_monitor_activities' );
 
 		$row = $table->head()->row();
 		$table->bulk_actions()
@@ -102,6 +103,8 @@ trait overview
 			$activity->data = (object)$activity->data;
 
 			$row = $table->body()->row();
+			$row->css_class( $activity->hook );
+
 			$table->bulk_actions()->cb( $row, $activity->id );
 
 			if ( $filters_settings->display_table_column( 'dt_created' ) )

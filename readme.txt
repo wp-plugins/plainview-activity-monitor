@@ -97,6 +97,11 @@ No. PHP 5.4 is required and has been released long enough for hosts to have had 
 
 == Changelog ==
 
+= 20140605 =
+
+* New: Table has CSS classes.
+* Fix: Fix for single blog installs.
+
 = 20140521 =
 
 * Fix: Better support for single blog installs (switch_to_blog() checks).
