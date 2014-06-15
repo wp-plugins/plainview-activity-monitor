@@ -97,6 +97,10 @@ No. PHP 5.4 is required and has been released long enough for hosts to have had 
 
 == Changelog ==
 
+= 20140615 =
+* New: Better compatability with Windows servers.
+* Code: SDK update.
+
 = 20140605 =
 
 * New: Table has CSS classes.
