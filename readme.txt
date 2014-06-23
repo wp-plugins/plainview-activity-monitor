@@ -97,6 +97,9 @@ No. PHP 5.4 is required and has been released long enough for hosts to have had 
 
 == Changelog ==
 
+= 20140623 =
+* Fix: Posts without titles get their ID as the title.
+
 = 20140615 =
 * New: Better compatability with Windows servers.
 * Code: SDK update.

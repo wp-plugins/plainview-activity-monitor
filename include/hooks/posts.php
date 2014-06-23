@@ -37,9 +37,12 @@ abstract class posts
 	{
 		if ( $post === null )
 			$post = $this->post;
+		$title = esc_html( $post->post_title );
+		if ( trim( $title ) == '' )
+			$title = $post->ID;
 		return sprintf( '<a href="%s">%s</a>',
 			get_permalink( $post->ID ),
-			esc_html( $post->post_title )
+			$title
 		);
 	}
 
