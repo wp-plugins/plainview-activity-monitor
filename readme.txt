@@ -97,6 +97,13 @@ No. PHP 5.4 is required and has been released long enough for hosts to have had 
 
 == Changelog ==
 
+= 20140708 =
+* New: Prune setting keeps a maximum amount of activities in the database. Standard is one million rows.
+* Fix: IP filtering in the overview works now.
+* Code: Hook->get_vendor, get_description and get_hook are not static anymore.
+* Code: New action: get_logged_hooks allows plugins to add hooks dynamically.
+* Code: Hooks have their name stored in ->hook.
+
 = 20140623 =
 * Fix: Posts without titles get their ID as the title.
 

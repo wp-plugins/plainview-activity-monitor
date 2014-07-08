@@ -9,7 +9,7 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class delete_post
 	extends posts
 {
-	public static function get_description()
+	public function get_description()
 	{
 		return 'A post is deleted permanently.';
 	}

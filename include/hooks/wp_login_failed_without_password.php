@@ -9,12 +9,12 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wp_login_failed_without_password
 	extends wp_login_failed
 {
-	public static function get_description()
+	public function get_description()
 	{
 		return 'Failed to log in due to non-existent user or bad password. Does not display the password.';
 	}
 
-	public static function get_hook()
+	public function get_hook()
 	{
 		return 'wp_login_failed';
 	}

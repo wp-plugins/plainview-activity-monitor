@@ -9,12 +9,12 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wp_login
 	extends hook
 {
-	public static function get_description()
+	public function get_description()
 	{
 		return 'User logged in.';
 	}
 
-	public static function get_parameter_count()
+	public function get_parameter_count()
 	{
 		return 2;
 	}

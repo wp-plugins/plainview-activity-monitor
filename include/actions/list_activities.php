@@ -36,6 +36,12 @@ class list_activities
 	public $count = false;
 
 	/**
+		@brief		Date from whence to list. MYSQL DATETIME format.
+		@since		2014-07-05 14:39:41
+	**/
+	public $from_date = null;
+
+	/**
 		@brief		Collection of hooks to ignore.
 		@since		2014-05-03 19:28:24
 	**/
@@ -70,6 +76,12 @@ class list_activities
 		@since		2014-05-03 19:26:36
 	**/
 	public $page = 1;
+
+	/**
+		@brief		Last date to list. MYSQL DATETIME format.
+		@since		2014-07-05 14:39:41
+	**/
+	public $until_date = null;
 
 	/**
 		@brief		Collection of user IDs to ignore.

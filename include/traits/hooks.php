@@ -16,7 +16,8 @@ trait hooks
 	**/
 	public function _hooks_construct()
 	{
-		$this->add_action( 'plainview_activity_monitor_manifest_hooks' );
+		$this->add_action( 'plainview_activity_monitor_get_logged_hooks', 9 );
+		$this->add_action( 'plainview_activity_monitor_manifest_hooks', 9 );
 	}
 
 	/**
@@ -68,6 +69,15 @@ trait hooks
 			$this->__logged_hooks->activity_monitor = $this;
 		}
 		return $this->__logged_hooks;
+	}
+
+	/**
+		@brief		Fill in which hooks we are set to log.
+		@since		2014-07-06 17:43:01
+	**/
+	public function plainview_activity_monitor_get_logged_hooks( $action )
+	{
+		$action->logged_hooks = $this->logged_hooks();
 	}
 
 	/**

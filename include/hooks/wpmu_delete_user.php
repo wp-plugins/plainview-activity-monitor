@@ -9,7 +9,7 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wpmu_delete_user
 	extends delete_user
 {
-	public static function get_description()
+	public function get_description()
 	{
 		return 'User deletion in a Wordpress Network.';
 	}

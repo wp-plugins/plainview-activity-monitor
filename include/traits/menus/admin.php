@@ -2,6 +2,9 @@
 
 namespace plainview\wordpress\activity_monitor\traits\menus;
 
+use \plainview\wordpress\activity_monitor\actions\list_activities;
+use \plainview\wordpress\activity_monitor\actions\prune_activities;
+
 trait admin
 {
 	/**
@@ -50,7 +53,7 @@ trait admin
 						foreach( $ids as $id )
 							foreach( $hooks as $hook )
 							{
-								if ( $hook::get_id() != $id )
+								if ( $hook->get_id() != $id )
 									continue;
 								$logged_hooks[ $hook->get_classmap() ] = $hook->get_classmap();
 							}
@@ -60,7 +63,7 @@ trait admin
 						foreach( $ids as $id )
 							foreach( $hooks as $hook )
 							{
-								if ( $hook::get_id() != $id )
+								if ( $hook->get_id() != $id )
 									continue;
 								unset( $logged_hooks[ $hook->get_classmap() ] );
 							}
@@ -75,11 +78,11 @@ trait admin
 		foreach( $action->hooks as $hook )
 		{
 			$row = $table->body()->row();
-			$bulk_id = $hook::get_id();
+			$bulk_id = $hook->get_id();
 			$table->bulk_actions()->cb( $row, $bulk_id );
 			$row->td( 'hook' )
 				->css_class( 'plugin-title' )
-				->text( $hook::get_hook() );
+				->text( $hook->get_hook() );
 
 			$classmap = $hook->get_classmap();
 			if ( isset( $logged_hooks[ $classmap ]  ) )
@@ -87,14 +90,14 @@ trait admin
 			else
 				$row->css_class( 'inactive' );
 
-			$row->td( 'vendor' )->text( $hook::get_vendor() );
-			$row->td( 'description' )->text( $hook::get_description() );
+			$row->td( 'vendor' )->text( $hook->get_vendor() );
+			$row->td( 'description' )->text( $hook->get_description() );
 
 			if ( $this->debugging() )
 			{
 				$debug = [];
-				$debug[ 'Priority' ] = $hook::get_priority();
-				$debug[ 'Parameter count' ] = $hook::get_parameter_count();
+				$debug[ 'Priority' ] = $hook->get_priority();
+				$debug[ 'Parameter count' ] = $hook->get_parameter_count();
 				$text = [];
 				foreach( $debug as $key => $value )
 					$text[] = sprintf( '<em>%s</em> %s', $key, $value );
@@ -121,6 +124,24 @@ trait admin
 		$form = $this->form2();
 		$r = '';
 
+		$fs = $form->fieldset( 'fs_database' );
+		$fs->legend->label_( 'Database' );
+
+		// Get an activity count.
+		$list_activities = new list_activities;
+		$list_activities->count = true;
+		$list_activities->execute();
+
+		$fs->number( 'activities_in_database' )
+			->description_( 'How many activities to store in the database. There are currently %s activities stored.', $list_activities->result )
+			->label_( 'Activities in database' )
+			->min( 1 )
+			->required()
+			->size( 5 )
+			->value( $this->get_site_option( 'activities_in_database' ) );
+		$fs->markup( 'mu_activities_in_database' )
+			->p_( 'This value is dependent on how much activity there is on your blog and how much history you wish to keep. Updating this value cleans the database. There is also a 5% chance that the database will be cleaned up when a new activity is logged.' );
+
 		$fs = $form->fieldset( 'fs_display' );
 		$fs->legend->label_( 'Display' );
 
@@ -130,7 +151,7 @@ trait admin
 			->min( 1, 10000 )
 			->required()
 			->size( 5, 5 )
-			->value( $this->get_site_option( 'per_page', $this->site_options[ 'per_page' ] ) );
+			->value( $this->get_site_option( 'per_page' ) );
 
 		$this->add_debug_settings_to_form( $form );
 
@@ -151,6 +172,12 @@ trait admin
 			{
 				$this->save_debug_settings_from_form( $form );
 				$this->update_site_option( 'per_page', $form->input( 'per_page' )->get_filtered_post_value() );
+				$activities_in_database = $form->input( 'activities_in_database' )->get_filtered_post_value();
+				$this->update_site_option( 'activities_in_database', $activities_in_database );
+
+				$prune_activities = new prune_activities;
+				$prune_activities->count = $activities_in_database;
+				$prune_activities->execute();
 
 				$this->message_( 'The settings have been saved.' );
 			}

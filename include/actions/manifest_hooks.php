@@ -32,7 +32,7 @@ class manifest_hooks
 	{
 		$this->hooks->sort_by( function( $hook )
 		{
-			return $hook::get_hook() . $hook::get_vendor() . $hook::get_description();
+			return $hook->get_hook() . $hook->get_vendor() . $hook->get_description();
 		});
 	}
 }

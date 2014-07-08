@@ -13,6 +13,19 @@ class hook
 	use \plainview\sdk\traits\method_chaining;
 
 	/**
+		@brief		The name of the hook - the default being the class name without the namespace.
+		@since		2014-07-07 22:00:50
+	**/
+	public $hook;
+
+	public function __construct()
+	{
+		$class = get_called_class();
+		$class = preg_replace( '/.*\\\/', '', $class );
+		$this->hook = $class;
+	}
+
+	/**
 		@brief		Return the instance of the activity monitor.
 		@since		2014-05-06 22:42:55
 	**/
@@ -61,7 +74,7 @@ class hook
 		@brief		Get the name of the vendor.
 		@since		2014-04-27 23:45:01
 	**/
-	public static function get_description()
+	public function get_description()
 	{
 		return 'Default description.';
 	}
@@ -71,22 +84,20 @@ class hook
 		@details	Override only if the name of the child class does not match the hook name.
 		@since		2014-04-27 23:45:50
 	**/
-	public static function get_hook()
+	public function get_hook()
 	{
-		$class = get_called_class();
-		$class = preg_replace( '/.*\\\/', '', $class );
-		return $class;
+		return $this->hook;
 	}
 
 	/**
 		@brief		Return an unique ID for this activity.
 		@since		2014-05-01 11:25:31
 	**/
-	public static function get_id()
+	public function get_id()
 	{
 		$id = sprintf( '%s %s %s',
-			static::get_hook(),
-			static::get_vendor(),
+			$this->get_hook(),
+			$this->get_vendor(),
 			get_called_class()
 		);
 		return md5( $id );
@@ -96,7 +107,7 @@ class hook
 		@brief		How many parameters should we tell Wordpress that we want?
 		@since		2014-05-01 08:33:37
 	**/
-	public static function get_parameter_count()
+	public function get_parameter_count()
 	{
 		// Default, as per Wordpress, is 1.
 		return 1;
@@ -106,7 +117,7 @@ class hook
 		@brief		The priority we want to hook into.
 		@since		2014-05-01 08:33:10
 	**/
-	public static function get_priority()
+	public function get_priority()
 	{
 		// Default, as per Wordpress, is 10.
 		return 10;
@@ -116,7 +127,7 @@ class hook
 		@brief		Get the name of the vendor.
 		@since		2014-04-27 23:45:01
 	**/
-	public static function get_vendor()
+	public function get_vendor()
 	{
 		return 'Plainview';
 	}
@@ -129,7 +140,7 @@ class hook
 	{
 		if ( $this->is_disabled() )
 			return;
-		add_action( static::get_hook(), [ $this, '_log' ], static::get_priority(), static::get_parameter_count() );
+		add_action( $this->get_hook(), [ $this, '_log' ], $this->get_priority(), $this->get_parameter_count() );
 	}
 
 	/**
@@ -174,7 +185,7 @@ class hook
 
 	/**
 		@brief		The internal method that is called when the hook is executed (read: should be logged).
-		@details	Does some housekeeping in th the form of saving the parameters and prepping the log_hook action and then calling log().
+		@details	Does some housekeeping in the form of saving the parameters and prepping the log_hook action and then calling log().
 		@since		2014-05-03 15:21:54
 	**/
 	public function _log()
@@ -183,7 +194,7 @@ class hook
 			return;
 
 		$this->log_hook = new log_hook;
-		$this->log_hook->hook( static::get_hook() );
+		$this->log_hook->hook( $this->get_hook() );
 
 		$args = func_get_args();
 		$this->parameters = new \plainview\sdk\collections\collection;

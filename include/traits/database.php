@@ -2,6 +2,7 @@
 
 namespace plainview\wordpress\activity_monitor\traits;
 
+use \plainview\wordpress\activity_monitor\actions\prune_activities;
 use \plainview\wordpress\activity_monitor\database\activity;
 
 /**
@@ -19,6 +20,7 @@ trait database
 		$this->add_action( 'plainview_activity_monitor_list_activities' );
 		$this->add_action( 'plainview_activity_monitor_list_distinct_values' );
 		$this->add_action( 'plainview_activity_monitor_log_hook', 20 );
+		$this->add_action( 'plainview_activity_monitor_prune_activities' );
 		$this->add_action( 'plainview_activity_monitor_remove_activities' );
 	}
 
@@ -79,6 +81,12 @@ trait database
 			if ( $action->$property->count() > 0 )
 				$where[] = sprintf( "`%s` IN ('%s')", $column, implode( "','", $action->$property->to_array() ) );
 		}
+
+		if ( $action->from_date !== null )
+			$where[] = sprintf( "`dt_created` >= '%s'", $action->from_date );
+
+		if ( $action->until_date !== null )
+			$where[] = sprintf( "`dt_created` <= '%s'", $action->until_date );
 
 		if ( count( $where ) > 0 )
 			$where = sprintf( 'WHERE %s', implode( 'AND', $where ) );
@@ -149,6 +157,37 @@ trait database
 	public function plainview_activity_monitor_log_hook( $action )
 	{
 		$action->create_activity()->db_update();
+
+		// We need a 5% chance of pruning.
+		if ( rand( 1, 100 ) > 5 )
+			return;
+
+		// And now we prune.
+		$prune_activities = new prune_activities;
+		$prune_activities->count = $this->get_site_option( 'activities_in_database' );
+		$prune_activities->execute();
+	}
+
+	/**
+		@brief		Keep only a certain amount of activities in the database.
+		@since		2014-07-08 12:08:40
+	**/
+	public function plainview_activity_monitor_prune_activities( $action )
+	{
+		$query = sprintf( "SELECT ( `id` ) FROM `%s` ORDER BY `id` DESC LIMIT %s,1",
+			static::get_table_name( 'activities' ),
+			$action->count
+		);
+		$this->debug( 'Running query: %s', $query );
+		$results = $this->query( $query );
+		$id = reset( $results );
+		$id = $id[ 'id' ];
+		$query = sprintf( "DELETE FROM `%s` WHERE `id` <= '%s'",
+			static::get_table_name( 'activities' ),
+			$id
+		);
+		$this->debug( 'Running query: %s', $query );
+		$results = $this->query( $query );
 	}
 
 	/**

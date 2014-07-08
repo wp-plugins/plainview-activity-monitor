@@ -9,7 +9,7 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class trash_to_publish
 	extends transition_post_status
 {
-	public static function get_description()
+	public function get_description()
 	{
 		return 'A post is restored.';
 	}

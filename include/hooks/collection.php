@@ -18,7 +18,6 @@ class collection
 		return \plainview\wordpress\activity_monitor\Plainview_Activity_Monitor::instance();
 	}
 
-
 	/**
 		@brief		Builds the classmap for autoloading.
 		@since		2014-05-01 08:42:25

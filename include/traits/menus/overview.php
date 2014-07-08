@@ -246,7 +246,7 @@ trait overview
 
 		$ips = [];
 		foreach( $list_distinct_values->as_options( 'ips' ) as $ip )
-			$ips[ long2ip( $ip ) ] = long2ip( $ip );
+			$ips[ long2ip( $ip ) ] = $ip;
 
 		$fs->select( 'ips_to_exclude' )
 			->description_( 'Do not display the selected IP addresses.' )

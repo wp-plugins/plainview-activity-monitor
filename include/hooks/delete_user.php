@@ -9,7 +9,7 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class delete_user
 	extends user_register
 {
-	public static function get_description()
+	public function get_description()
 	{
 		return 'User deletion.';
 	}
