@@ -97,6 +97,9 @@ No. PHP 5.4 is required and has been released long enough for hosts to have had 
 
 == Changelog ==
 
+= 20140814 =
+* Fix: Prune activities bug fixed.
+
 = 20140708 =
 * New: Prune setting keeps a maximum amount of activities in the database. Standard is one million rows.
 * Fix: IP filtering in the overview works now.
