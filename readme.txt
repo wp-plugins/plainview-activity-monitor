@@ -1,19 +1,18 @@
 === Plainview Activity Monitor ===
 Contributors: edward_plainview
-Donate link: http://plainview.se/donate/
 License: GPLv3
 Requires at least: 3.9
 Stable tag: trunk
-Tags: activity monitor, activities, security
-Tested up to: 3.9.1
+Tags: activity monitor, activities, monitor, security, ddos, brute force
+Tested up to: 4.0
 
-Plugin for PHP v5.4+ that monitors Wordpress hooks for user activity on a blog or network.
+Plugin for PHP v5.4+ that monitors Wordpress actions for user activity on a blog or network.
 
 == Description ==
 
-Plugin for PHP v5.4+ that monitors Wordpress hooks for user activity on a blog or network.
+Plugin for PHP v5.4+ that monitors Wordpress actions for user activity on a blog or network.
 
-Currently monitored hooks:
+Currently monitored actions:
 
 * delete_post
 * delete_user
@@ -44,6 +43,30 @@ The activities can then be shown in global table showing activities on the whole
 
 The activites can also be filtered so that only specific blogs / hooks / IPs / users are displayed.
 
+= Plugin Pack =
+
+The <a href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/" title="Activity Monitor Plugin Packs's page on the web"><em>Activity Monitor Plugin Pack</em></a> is an actively maintained collection of plugins that expand the functionality of Activity Monitor.
+
+Currently the plugin pack offers:
+
+* <a title="Bruteforce Detect AM plugin" href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/bruteforce-detect-am-plugin/">Bruteforce Detect</a> monitors failed logins and fires an action when limits have been reached.
+* <a title="Content Watch AM plugin" href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/content-watch-am-plugin/">Content Watch</a> monitors posts and pages for phrases and fires an action when a phrase is detected.
+* <a title="IP Too Often AM plugin" href="http://plugins.plainview.se/ip-too-often-am-plugin/">IP Too Often</a> reacts when an IP causes specific action(s) to occur too often.
+* <a title="Login Failed Username AM plugin" href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/login-failed-username-am-plugin/">Login Failed Username</a> fires an action when a banned username fails to login.
+* <a title="Send To CloudFlare AM plugin" href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/send-to-cloudflare-am-plugin/">Send To CloudFlare</a> sends IPs to CloudFlare to be whitelisted / banned when hook(s) are encountered.
+* <a title="Send To E-mail AM plugin" href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/send-to-e-mail-am-plugin/">Send To E-mail</a> sends an e-mail when hook(s) are encountered.
+* <a title="Send To Exec AM plugin" href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/send-to-exec-am-plugin/">Send To Exec</a> runs an executable command when hook(s) are encountered.
+
+= Security tips =
+
+There are several ways for people to break in to your Wordpress installation, or cause trouble by DDOS. Here are some tips on how to use the Activity Monitor and its plugins to help detect problems:
+
+* Get a DDOS protection service with an API. There is a plugin to ban IPs via CloudFlare (<em>Send To CloudFlare</em>). Other APIs could be supported as the need arises.
+* If you have another DDOS service, write a script that can ban visitors by IP. Use this script with the <em>Send To Exec</em> plugin.
+* If you can't ban users using a script, at least set up the <em>Send To E-mail</em> plugin to inform you of suspicious activity.
+* Use the Bruteforce Detect plugin to detect when an IP or IPs are trying to guess the admin's password. Ban the IPs automatically using <em>Send To Exec</em>.
+* Do not use admin as the username for your administrator account. Instead, use some else and add the admin username to the list of banned usernames in the <em>Login Failed Username</em> plugin. Ban the IPs that cause the plugin to react.
+
 = Custom hooks =
 
 If you are a plugin developer and wish to log your custom hooks, build a plugin that extends an Activity Monitor hook!
@@ -67,7 +90,7 @@ function my_example_manifest_hooks( $action )
 
 Done!
 
-Flesh out the log() or log_post() method in your hook class with something, enable the hook in the Activity Monitor settings and then wait for the hook to be called.
+Flesh out the log() or log_post() method in your hook class with something and then wait for the hook to be called.
 
 == Installation ==
 
@@ -84,6 +107,7 @@ Flesh out the log() or log_post() method in your hook class with something, enab
 5. Admin settings tab
 6. Hook activation / deactivation
 7. Uninstall tab that removes the plugin from the database
+8. Plugin Pack overview with extra plugins
 
 == Frequently Asked Questions ==
 
@@ -93,9 +117,13 @@ Use the Wordpress support forum.
 
 = I do not have PHP 5.4. Can I run the Activity Monitor? =
 
-No. PHP 5.4 is required and has been released long enough for hosts to have had ample time to update.
+No. PHP 5.3 is no longer officially supported. It is time for your web host to upgrade.
 
 == Changelog ==
+
+= 20141006 =
+* Fix: sprintf error is hidden to prevent problems.
+* New: Plugin pack released.
 
 = 20140814 =
 * Fix: Prune activities bug fixed.

@@ -16,6 +16,8 @@ trait admin
 		$form = $this->form2();
 		$r = '';
 
+		$r = $this->p_( 'Select the actions you wish to store in the database. All the below actions, whether they are stored or not, are detectable and usable by Activity Monitor plugins.' );
+
 		$action = new \plainview\wordpress\activity_monitor\actions\manifest_hooks;
 		$action->execute();
 		$hooks = $action->hooks;
@@ -180,6 +182,10 @@ trait admin
 				$prune_activities->execute();
 
 				$this->message_( 'The settings have been saved.' );
+
+				$_POST = [];
+				echo $this->menu_admin_settings();
+				return;
 			}
 		}
 

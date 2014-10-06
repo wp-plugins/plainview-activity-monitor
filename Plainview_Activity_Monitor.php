@@ -1,12 +1,12 @@
 <?php
 /*
 Author:			edward_plainview
-Author Email:	edward@plainview.se
-Author URI:		http://www.plainview.se
+Author Email:	plugins@plainview.se
+Author URI:		http://plugins.plainview.se
 Description:	Monitors activity on a site or blog.
 Plugin Name:	Plainview Activity Monitor
-Plugin URI:		http://plainview.se/wordpress/plainview-activity-monitor/
-Version:		20140814
+Plugin URI:		https://wordpress.org/plugins/plainview-activity-monitor/
+Version:		20141006
 */
 
 namespace plainview\wordpress\activity_monitor;

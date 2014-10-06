@@ -26,7 +26,10 @@ class plugin
 	**/
 	public function activate()
 	{
-		$this->plugin()->activate_internal();
+		// TODO: convert this to paths() when the SDK is updated everywhere.
+		$filename = $this->get( 'class' )->paths[ 'filename_from_plugin_directory' ];
+		$hook = sprintf( 'activate_%s', plugin_basename( $filename ) );
+		do_action( $hook );
 	}
 
 	/**
@@ -35,7 +38,10 @@ class plugin
 	**/
 	public function deactivate()
 	{
-		$this->plugin()->deactivate_internal();
+		// TODO: convert this to paths() when the SDK is updated everywhere.
+		$filename = $this->get( 'class' )->paths[ 'filename_from_plugin_directory' ];
+		$hook = sprintf( 'deactivate_%s', plugin_basename( $filename ) );
+		do_action( $hook );
 	}
 
 	/**
@@ -168,7 +174,11 @@ class plugin
 	public function load()
 	{
 		$classname = $this->get( 'classname' );
-		$class = new $classname;
+		$parameter = null;
+		$reflection = new \ReflectionClass( $classname );
+		if ( $reflection->isSubClassOf( '\\plainview\\sdk\\wordpress\\base' ) )
+			$parameter = $reflection->getFilename();
+		$class = new $classname( $parameter );
 		return $this->set( 'class', $class );
 	}
 
@@ -190,5 +200,14 @@ class plugin
 	public function set_classname( $classname )
 	{
 		return $this->set( 'classname', $classname );
+	}
+
+	/**
+		@brief		Ask the plugin to uninstall itself.
+		@since		2014-07-16 13:31:16
+	**/
+	public function uninstall()
+	{
+		$this->plugin()->uninstall_internal();
 	}
 }

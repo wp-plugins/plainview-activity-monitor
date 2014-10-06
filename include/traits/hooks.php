@@ -16,6 +16,7 @@ trait hooks
 	**/
 	public function _hooks_construct()
 	{
+		$this->add_action( 'plainview_activity_monitor_get_active_hooks', 9 );
 		$this->add_action( 'plainview_activity_monitor_get_logged_hooks', 9 );
 		$this->add_action( 'plainview_activity_monitor_manifest_hooks', 9 );
 	}
@@ -69,6 +70,16 @@ trait hooks
 			$this->__logged_hooks->activity_monitor = $this;
 		}
 		return $this->__logged_hooks;
+	}
+
+	/**
+		@brief		Return a collection of all hooks that are active.
+		@details	Since the logged hooks are a subsection of the active hooks, assume that all logged hooks are active.
+		@since		2014-10-04 08:30:49
+	**/
+	public function plainview_activity_monitor_get_active_hooks( $action )
+	{
+		$action->active_hooks = $this->logged_hooks();
 	}
 
 	/**

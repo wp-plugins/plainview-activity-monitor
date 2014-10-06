@@ -5,6 +5,7 @@ namespace plainview\wordpress\activity_monitor\traits\menus;
 trait base
 {
 	use admin;
+	use plugin_pack;
 	use overview;
 
 	/**
@@ -38,6 +39,15 @@ trait base
 			'manage_options',
 			'plainview_activity_monitor_admin',
 			[ &$this, 'menu_admin_tabs' ]
+		);
+
+		$this->add_submenu_page(
+			'plainview_activity_monitor',
+			$this->_( 'Plugin pack info' ),
+			$this->_( 'Plugin pack information' ),
+			'manage_options',
+			'plainview_activity_plugin_pack_info',
+			[ &$this, 'menu_plugin_pack_info' ]
 		);
 
 		$action = new \plainview\wordpress\activity_monitor\actions\admin_menu;

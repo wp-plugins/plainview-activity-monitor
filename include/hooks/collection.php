@@ -46,6 +46,18 @@ class collection
 	}
 
 	/**
+		@brief		Does this hook name occur in the collection?
+		@since		2014-10-04 09:04:10
+	**/
+	public function has_hook( $name )
+	{
+		foreach( $this->items as $hook )
+			if ( $hook->hook == $name )
+				return true;
+		return false;
+	}
+
+	/**
 		@brief		Register a hook, adding all the necessary info to the indexes.
 		@since		2014-04-27 20:56:42
 	**/

@@ -2,6 +2,7 @@
 
 namespace plainview\wordpress\activity_monitor\traits;
 
+use \plainview\wordpress\activity_monitor\actions\get_logged_hooks;
 use \plainview\wordpress\activity_monitor\actions\prune_activities;
 use \plainview\wordpress\activity_monitor\database\activity;
 
@@ -156,6 +157,12 @@ trait database
 	**/
 	public function plainview_activity_monitor_log_hook( $action )
 	{
+		// Only log this hook if it is set to be logged.
+		$logged = new get_logged_hooks;
+		$logged->execute();
+		if ( ! $logged->logged_hooks->has_hook( $action->hook ) )
+			return;
+
 		$action->create_activity()->db_update();
 
 		// We need a 5% chance of pruning.

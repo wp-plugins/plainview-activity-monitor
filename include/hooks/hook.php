@@ -163,7 +163,7 @@ class hook
 		$args = func_get_args();
 		if ( count( $args ) > 0 )
 		{
-			$text = call_user_func_array( 'sprintf', $args );
+			$text = @call_user_func_array( 'sprintf', $args );
 			if ( $text == '' )
 				$text = $args[ 0 ];
 		}
