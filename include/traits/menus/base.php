@@ -19,6 +19,9 @@ trait base
 
 	public function admin_menu()
 	{
+		if ( function_exists( 'is_super_admin' ) && ! is_super_admin() )
+			return;
+
 		if ( ! $this->role_at_least( 'administrator' ) )
 			return;
 
