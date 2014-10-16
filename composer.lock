@@ -1,0 +1,66 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "b452dc289c8cb1b5bb0a0bc1dde039ee",
+    "packages": [
+
+    ],
+    "packages-dev": [
+        {
+            "name": "plainview/sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/the-plainview/sdk.git",
+                "reference": "1692982714b16b84680f7e63c48d62e75175da6d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/the-plainview/sdk/zipball/1692982714b16b84680f7e63c48d62e75175da6d",
+                "reference": "1692982714b16b84680f7e63c48d62e75175da6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "plainview\\sdk\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Edward Plainview",
+                    "email": "edward@plainview.se"
+                }
+            ],
+            "description": "Plainview SDK",
+            "time": "2014-10-16 17:33:52"
+        }
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "plainview/sdk": 20
+    },
+    "prefer-stable": false,
+    "platform": [
+
+    ],
+    "platform-dev": {
+        "php": ">=5.4.0"
+    }
+}
