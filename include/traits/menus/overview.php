@@ -108,7 +108,13 @@ trait overview
 			$table->bulk_actions()->cb( $row, $activity->id );
 
 			if ( $filters_settings->display_table_column( 'dt_created' ) )
-				$row->td( 'dt_created' )->text( $activity->dt_created );
+			{
+				$time = strtotime( $activity->dt_created );
+				// Add the blog timezone
+				$offset = wp_timezone_override_offset();
+				$time += $offset * HOUR_IN_SECONDS;
+				$row->td( 'dt_created' )->text( date( 'Y-m-d H:i:s', $time ) );
+			}
 
 			if ( $filters_settings->display_table_column( 'blog_id' ) )
 			{

@@ -65,7 +65,7 @@ class log_hook
 		$this->blog_id = get_current_blog_id();
 		$this->data = new data;
 		$this->data->__parent = $this;
-		$this->dt_created = $this->activity_monitor()->now();
+		$this->dt_created = date( 'Y-m-d H:i:s', time() );
 		$this->ip = ip2long( $_SERVER[ 'REMOTE_ADDR' ] );
 		$this->user_id = get_current_user_id();
 	}

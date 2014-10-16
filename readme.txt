@@ -121,6 +121,9 @@ No. PHP 5.3 is no longer officially supported. It is time for your web host to u
 
 == Changelog ==
 
+= 20141016 =
+* Fix: Activity timestamps use local timezone when being displayed.
+
 = 20141013 =
 * Fix: If on a network, only super admins may see the menu.
 
