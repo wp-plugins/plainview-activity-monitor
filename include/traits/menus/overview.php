@@ -98,6 +98,8 @@ trait overview
 		if ( $filters_settings->display_table_column( 'description' ) )
 			$row->th( 'description' )->text_( 'Description' );
 
+		$offset = wp_timezone_override_offset();
+
 		foreach( $activities as $activity )
 		{
 			$activity->data = (object)$activity->data;
@@ -111,7 +113,6 @@ trait overview
 			{
 				$time = strtotime( $activity->dt_created );
 				// Add the blog timezone
-				$offset = wp_timezone_override_offset();
 				$time += $offset * HOUR_IN_SECONDS;
 				$row->td( 'dt_created' )->text( date( 'Y-m-d H:i:s', $time ) );
 			}

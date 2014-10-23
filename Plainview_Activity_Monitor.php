@@ -6,7 +6,7 @@ Author URI:		http://plugins.plainview.se
 Description:	Monitors activity on a site or blog.
 Plugin Name:	Plainview Activity Monitor
 Plugin URI:		https://wordpress.org/plugins/plainview-activity-monitor/
-Version:		20141016
+Version:		20141023
 */
 
 namespace plainview\wordpress\activity_monitor;
@@ -25,15 +25,6 @@ class Plainview_Activity_Monitor
 	use \plainview\sdk\wordpress\traits\debug;
 
 	protected $sdk_version_required = 20140405;				// add_action / add_filter
-
-	protected $site_options = array(
-		'database_version' => 0,							// Version of the database.
-		'debug' => false,									// Display debug information?
-		'debug_ips' => '',									// List of IP addresses that can see debug information, when debug is enabled.
-		'logged_hooks' => [],								// Array of activity class names.
-		'activities_in_database' => 1000000,				// How many activities to keep in the database.
-		'per_page' => 100,									// How many items to show per table page.
-	);
 
 	public function _construct()
 	{
@@ -99,6 +90,18 @@ class Plainview_Activity_Monitor
 			return $this->__cache;
 		$this->__cache = new database\cache;
 		return $this->__cache;
+	}
+
+	public function site_options()
+	{
+		return array_merge( [
+			'database_version' => 0,							// Version of the database.
+			'debug' => false,									// Display debug information?
+			'debug_ips' => '',									// List of IP addresses that can see debug information, when debug is enabled.
+			'logged_hooks' => [],								// Array of activity class names.
+			'activities_in_database' => 1000000,				// How many activities to keep in the database.
+			'per_page' => 100,									// How many items to show per table page.
+		], parent::site_options() );
 	}
 
 	public function wp_loaded()

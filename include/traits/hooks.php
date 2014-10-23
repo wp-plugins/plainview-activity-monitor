@@ -98,6 +98,7 @@ trait hooks
 	public function plainview_activity_monitor_manifest_hooks( $action )
 	{
 		foreach ( [
+			'admin_head',
 			'delete_post',
 			'delete_user',
 			'draft_to_publish',
@@ -108,6 +109,7 @@ trait hooks
 			'retrieve_password',
 			'trash_to_publish',
 			'user_register',
+			'wp_head',
 			'wp_login',
 			'wp_login_failed',
 			'wp_login_failed_without_password',

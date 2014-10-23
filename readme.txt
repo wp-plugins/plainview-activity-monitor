@@ -14,6 +14,7 @@ Plugin for PHP v5.4+ that monitors Wordpress actions for user activity on a blog
 
 Currently monitored actions:
 
+* admin_head for views in the admin interface
 * delete_post
 * delete_user
 * draft_to_publish
@@ -24,6 +25,7 @@ Currently monitored actions:
 * retrieve_password
 * trash_to_publish
 * user_register
+* wp_head for views on the front-end
 * wp_login
 * wp_login_failed
 * wp_login_failed but without logging the attempted password
@@ -71,14 +73,28 @@ There are several ways for people to break in to your Wordpress installation, or
 
 If you are a plugin developer and wish to log your custom hooks, build a plugin that extends an Activity Monitor hook!
 
-Step 1: Make sure that the Activity Monitor is available:
+Step 1: Create a custom hook. See any of the hooks in the `include/hooks` directory for examples.
 
-`if ( ! class_exists( '\\plainview\\wordpress\\activity_monitor\\Plainview_Activity_Monitor' ) )
-	return;
-`
-Step 2: Create a custom hook. See any of the hooks in the `include/hooks` directory for examples.
+Step 2: In your constructor, hook into the `plainview_activity_monitor_loaded` action.
 
-Step 3: Hook into plainview_activity_monitor_manifest_hooks and then register your hook.
+`add_action( 'plainview_activity_monitor_loaded', 'load_my_hooks' );`
+
+Step 3: Load your hooks.
+
+`public function load_my_hooks( $action )
+{
+	$class = __NAMESPACE__ . '\\hooks\\my_example_hook1';
+	$hook = new $class;
+	$hook->register_with( $action->hooks );
+
+	$class = __NAMESPACE__ . '\\hooks\\my_example_hook2';
+	$hook = new $class;
+	$hook->register_with( $action->hooks );
+}`
+
+Step 4: Hook into plainview_activity_monitor_manifest_hooks and then register your hook.
+
+This shows your action hooks to all the other Activity Monitor plugins.
 
 `add_action( 'plainview_activity_monitor_manifest_hooks', 'my_example_manifest_hooks' );
 
@@ -120,6 +136,11 @@ Use the Wordpress support forum.
 No. PHP 5.3 is no longer officially supported. It is time for your web host to upgrade.
 
 == Changelog ==
+
+= 20141023 =
+* New action: wp_head is triggered when a visitor views the front-end. Note that the action is not triggered if you have caching enabled.
+* New action: admin_head for views to the admin panel.
+* Code: Hide sprintf error in hook data.
 
 = 20141016 =
 * Fix: Activity timestamps use local timezone when being displayed.

@@ -30,7 +30,7 @@ class data
 	**/
 	public function html( $html )
 	{
-		$text = call_user_func_array( 'sprintf', func_get_args() );
+		$text = @call_user_func_array( 'sprintf', func_get_args() );
 		if ( $text == '' )
 			$text = $html;
 		return $this->set_key( 'html', $text );
