@@ -160,7 +160,7 @@ trait database
 		// Only log this hook if it is set to be logged.
 		$logged = new get_logged_hooks;
 		$logged->execute();
-		if ( ! $logged->logged_hooks->has_hook( $action->hook ) )
+		if ( ! $logged->logged_hooks->has( $action->hook->get_id() ) )
 			return;
 
 		$action->create_activity()->db_update();

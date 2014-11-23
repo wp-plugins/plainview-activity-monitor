@@ -199,7 +199,8 @@ class input
 		$input = clone( $this );
 
 		$input->set_attribute( 'id', $input->make_id() );
-		$input->set_attribute( 'name', $input->make_name() );
+		$name = $input->make_name();
+		$input->set_attribute( 'name', $name );
 
 		if ( $input->has_description )
 			if ( $this->description->label->content != '' )

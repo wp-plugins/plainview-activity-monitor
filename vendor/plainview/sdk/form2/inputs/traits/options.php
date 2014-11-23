@@ -158,16 +158,6 @@ trait options
 		return $r;
 	}
 
-	/**
-		@brief		Give the container a chance to prepare the options for display.
-		@since		20130524
-	**/
-	public function prepare_to_display()
-	{
-		$this->_name = $this->get_attribute( 'name' );
-		$this->clear_attribute( 'name' );
-	}
-
 	public function use_post_value()
 	{
 		// Unset the checked status of all inputs.

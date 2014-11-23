@@ -19,11 +19,6 @@ class fieldset
 
 	public $tag = 'fieldset';
 
-	public function __toString_before_container()
-	{
-		$this->clear_attribute( 'name' );
-	}
-
 	public function __toString_before_inputs()
 	{
 		$i = clone( $this );
@@ -35,6 +30,7 @@ class fieldset
 
 	public function _construct()
 	{
+		parent::_construct();
 		$this->legend = new legend( $this );
 	}
 

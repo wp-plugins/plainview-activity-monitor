@@ -60,14 +60,15 @@ trait container
 
 	public function __toString()
 	{
-		$r = $this->__toString_before_container();
-		$r .= $this->indent() . $this->open_tag() . "\n";
-		$r .= $this->__toString_before_inputs();
-		foreach( $this->inputs as $input )
+		$container = clone( $this );
+		$r = $container->__toString_before_container();
+		$r .= $container->indent() . $container->open_tag() . "\n";
+		$r .= $container->__toString_before_inputs();
+		foreach( $container->inputs as $input )
 			$r .= $input;
-		$r .= $this->__toString_after_inputs();
-		$r .= $this->indent() . $this->close_tag() . "\n";
-		$r .= $this->__toString_after_container();
+		$r .= $container->__toString_after_inputs();
+		$r .= $container->indent() . $container->close_tag() . "\n";
+		$r .= $container->__toString_after_container();
 		return $r;
 	}
 

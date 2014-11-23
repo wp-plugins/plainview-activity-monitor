@@ -29,6 +29,21 @@ class RadiosTest extends TestCase
 		$this->assertEquals( 3, $matches );
 	}
 
+	/**
+		@brief		Test that the options have the same name as the parent upon display.
+		@since		2014-11-16 09:24:50
+	**/
+	public function test_option_names()
+	{
+		$radios = $this->radios();
+		$input = $radios->input( 'radiostest_r1' );
+		$this->assertStringContainsRegExp( '/name="radiostest"/', $input->display_input() );
+		$input = $radios->input( 'radiostest_r2' );
+		$this->assertStringContainsRegExp( '/name="radiostest"/', $input->display_input() );
+		$input = $radios->input( 'radiostest_r3' );
+		$this->assertStringContainsRegExp( '/name="radiostest"/', $input->display_input() );
+	}
+
 	public function test_option_names_extract()
 	{
 		// Each individual radios option is actually an input, reachable by using input( RADIOSNAME_VALUE ).

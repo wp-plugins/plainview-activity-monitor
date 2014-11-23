@@ -37,4 +37,20 @@ class radio
 	{
 		return $this->get_attribute( 'checked' );
 	}
+
+	public function make_name()
+	{
+		if ( is_a( $this->container, 'plainview\\sdk\\form2\\inputs\\radios') )
+			$name = $this->container->get_attribute( 'name' );
+		else
+			$name = $this->get_attribute( 'name' );
+		$names = array_merge( $this->get_prefixes(), [ $name ] );
+
+		// The first prefix does NOT have brackets. The rest do. *sigh*
+		$r = array_shift( $names );
+		while ( count( $names ) > 0 )
+			$r .= '[' . array_shift( $names ) . ']';
+
+		return $r;
+	}
 }

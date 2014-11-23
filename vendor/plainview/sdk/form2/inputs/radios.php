@@ -16,13 +16,6 @@ class radios
 		parent::_construct();
 		$this->css_class( 'radios' );
 	}
-	public function __toString()
-	{
-		$name = $this->get_name();
-		foreach( $this->inputs as $input )
-			$input->set_attribute( 'name', $name );
-		return parent::__toString();
-	}
 
 	public function new_option( $o )
 	{

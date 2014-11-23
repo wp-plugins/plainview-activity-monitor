@@ -62,12 +62,14 @@ class hook
 	}
 
 	/**
-		@brief		Gets the classmap for autoloading.
-		@since		2014-05-01 08:43:51
+		@brief		Return the basename of this class.
+		@since		2014-11-22 12:17:53
 	**/
-	public function get_classmap()
+	public function get_class()
 	{
-		return get_class( $this );
+		$r = get_called_class();
+		$r = preg_replace( '/.*\\\\/', '', $r );
+		return $r;
 	}
 
 	/**
@@ -95,12 +97,10 @@ class hook
 	**/
 	public function get_id()
 	{
-		$id = sprintf( '%s %s %s',
-			$this->get_hook(),
-			$this->get_vendor(),
-			get_called_class()
+		return sprintf( '%s:%s',
+			$this->get_class(),
+			$this->get_hook()
 		);
-		return md5( $id );
 	}
 
 	/**
@@ -184,7 +184,7 @@ class hook
 	}
 
 	/**
-		@brief		The internal method that is called when the hook is executed (read: should be logged).
+		@brief		The internal method that is called when the hook is executed.
 		@details	Does some housekeeping in the form of saving the parameters and prepping the log_hook action and then calling log().
 		@since		2014-05-03 15:21:54
 	**/
@@ -194,7 +194,7 @@ class hook
 			return;
 
 		$this->log_hook = new log_hook;
-		$this->log_hook->hook( $this->get_hook() );
+		$this->log_hook->hook( $this );
 
 		$args = func_get_args();
 		$this->parameters = new \plainview\sdk\collections\collection;

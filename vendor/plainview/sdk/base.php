@@ -13,6 +13,14 @@ namespace plainview\sdk;
 
 	This list only shows which classes were modified. For a detailed list, see the class' changelog.
 
+	- 20141116		Form2: Fix radios input.
+	- 20141113		Wordpress: Plugin pack uses a get_plugin_classes action.
+	- 20141109		Wordpress: New EDD updater version.
+	- 20141103		Wordpress: Updater only needs one key. Checks less often.
+	- 20141030		Table: Element attribute modifications return this.
+	- 20141029		Wordpress: Updater works with multisites properly.
+	- 20141028		Wordpress: Plugin pack download link.
+	- 20141028		Wordpress: Plugin pack cleans plugin duplicates.
 	- 20141018		Wordpress: Fix action execute() and set_boolean.
 	- 20141016		Wordpress: Allow force new version check.
 	- 20141016		Wordpress: Plugin pack ignores non-existent plugins better.
@@ -129,7 +137,7 @@ class base
 		@since		20130416
 		@var		$sdk_version
 	**/
-	protected $sdk_version = 20141018;
+	protected $sdk_version = 20141116;
 
 	/**
 		@brief		Constructor.

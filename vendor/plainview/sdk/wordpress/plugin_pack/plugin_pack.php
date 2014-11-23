@@ -76,8 +76,15 @@ abstract class plugin_pack
 		$table = $this->table();
 
 		$plugins = new plugins( $this );
+
 		// Fill the plugins with all of the available classes
-		$plugins->populate( static::get_plugin_classes() );
+		$action = new actions\get_plugin_classes();
+		// The prefix is the basename of the plugin pack class, with an underscore.
+		// Not \threewp_broadcast\premium_pack\ThreeWP_Broadcast_Premium_Pack but ThreeWP_Broadcast_Premium_Pack_
+		$action->__prefix = preg_replace( '/.*\\\\/', '', get_called_class() ) . '_';
+		$action->add( static::get_plugin_classes() );
+		$action->execute();
+		$plugins->populate( $action->classes );
 
 		// Plugins class for the coloring.
 		$table = $this->table()->css_class( 'plugin_pack plugins' );

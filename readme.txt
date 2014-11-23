@@ -137,6 +137,10 @@ No. PHP 5.3 is no longer officially supported. It is time for your web host to u
 
 == Changelog ==
 
+= 20141123 =
+* New hooks: activated_plugin and deactivated_plugin.
+* Code: Enable same action classes to report different hooks.
+
 = 20141023 =
 * New action: wp_head is triggered when a visitor views the front-end. Note that the action is not triggered if you have caching enabled.
 * New action: admin_head for views to the admin panel.

@@ -49,12 +49,9 @@ class collection
 		@brief		Does this hook name occur in the collection?
 		@since		2014-10-04 09:04:10
 	**/
-	public function has_hook( $name )
+	public function has_hook( $hook )
 	{
-		foreach( $this->items as $hook )
-			if ( $hook->hook == $name )
-				return true;
-		return false;
+		return $this->has( $hook->get_id() );
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace plainview\wordpress\activity_monitor\traits\menus;
 
+use \plainview\wordpress\activity_monitor\actions;
 use \plainview\wordpress\activity_monitor\actions\list_activities;
 use \plainview\wordpress\activity_monitor\actions\prune_activities;
 
@@ -20,10 +21,33 @@ trait admin
 
 		$action = new \plainview\wordpress\activity_monitor\actions\manifest_hooks;
 		$action->execute();
-		$hooks = $action->hooks;
 		$action->sort();
+		$hooks = $action->hooks;
 
-		$logged_hooks = $this->get_site_option( 'logged_hooks', [] );
+		$logged_hooks = new actions\get_logged_hooks();
+		$logged_hooks = $logged_hooks->execute()->logged_hooks;
+
+		// Prune non-existent hooks off of the list of logged hooks.
+		$modified = false;
+		foreach( $logged_hooks as $id )
+		{
+			$found = false;
+			foreach( $hooks as $a_hook )
+			{
+				if ( $a_hook->get_id() == $id )
+				{
+					$found = true;
+					break;
+				}
+			}
+			if ( ! $found )
+			{
+				unset( $logged_hooks[ $id ] );
+				$modified = true;
+			}
+		}
+		if ( $modified )
+			$this->update_site_option( 'logged_hooks', $logged_hooks );
 
 		$table = $this->table();
 		$table->css_class( 'plugins' );		// We want to use the coloring.
@@ -51,24 +75,14 @@ trait admin
 				switch ( $table->bulk_actions()->get_action() )
 				{
 					case 'activate':
-						// Find the hook with these classmaps
+						// Find the hook with these names
 						foreach( $ids as $id )
-							foreach( $hooks as $hook )
-							{
-								if ( $hook->get_id() != $id )
-									continue;
-								$logged_hooks[ $hook->get_classmap() ] = $hook->get_classmap();
-							}
+							$logged_hooks[ $id ] = $id;
 					break;
 					case 'deactivate':
-						// Find the hook with these classmaps
+						// Find the hook with these names
 						foreach( $ids as $id )
-							foreach( $hooks as $hook )
-							{
-								if ( $hook->get_id() != $id )
-									continue;
-								unset( $logged_hooks[ $hook->get_classmap() ] );
-							}
+							unset( $logged_hooks[ $id ] );
 					break;
 				}
 				$this->update_site_option( 'logged_hooks', $logged_hooks );
@@ -84,10 +98,10 @@ trait admin
 			$table->bulk_actions()->cb( $row, $bulk_id );
 			$row->td( 'hook' )
 				->css_class( 'plugin-title' )
-				->text( $hook->get_hook() );
+				->text( $hook->get_hook() )
+				->title( $hook->get_class() );
 
-			$classmap = $hook->get_classmap();
-			if ( isset( $logged_hooks[ $classmap ]  ) )
+			if ( isset( $logged_hooks[ $hook->get_id() ]  ) )
 				$row->css_class( 'active' );
 			else
 				$row->css_class( 'inactive' );
@@ -208,14 +222,14 @@ trait admin
 
 		$tabs = $this->tabs();
 
-		$tabs->tab( 'settings' )
-			->callback_this( 'menu_admin_settings' )
-			->name_( 'Settings' );
-
 		$tabs->tab( 'hooks' )
 			->callback_this( 'menu_admin_hooks' )
 			->heading_( 'Logged hooks' )
 			->name_( 'Hooks' );
+
+		$tabs->tab( 'settings' )
+			->callback_this( 'menu_admin_settings' )
+			->name_( 'Settings' );
 
 		$tabs->tab( 'uninstall' )
 			->callback_this( 'admin_uninstall' )

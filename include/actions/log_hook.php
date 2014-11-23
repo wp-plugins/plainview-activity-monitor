@@ -97,6 +97,7 @@ class log_hook
 		$activity = new activity;
 		foreach( activity::keys() as $key )
 			$activity->$key = $this->$key;
+		$activity->hook = $this->hook->get_hook();
 		return $activity;
 	}
 

@@ -17,7 +17,7 @@ if ( ! function_exists( 'ddd' ) )
 			$export |= is_array( $arg );
 			$export |= is_object( $arg );
 			if ( $export )
-				$args[ $index ] = sprintf( '%s', var_export( $arg, true ) );
+				$args[ $index ] = sprintf( '%s', var_dump( $arg, true ) );
 		}
 
 		$text = $args[ 0 ];

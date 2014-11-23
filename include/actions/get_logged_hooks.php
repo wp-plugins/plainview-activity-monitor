@@ -14,4 +14,9 @@ class get_logged_hooks
 		@since		2014-07-06 17:41:34
 	**/
 	public $logged_hooks;
+
+	public function __construct()
+	{
+		$this->logged_hooks = new \plainview\wordpress\activity_monitor\hooks\collection();
+	}
 }
