@@ -14,7 +14,9 @@ Plugin for PHP v5.4+ that monitors Wordpress actions for user activity on a blog
 
 Currently monitored actions:
 
+* activated_plugin
 * admin_head for views in the admin interface
+* deactivated_plugin
 * delete_post
 * delete_user
 * draft_to_publish
