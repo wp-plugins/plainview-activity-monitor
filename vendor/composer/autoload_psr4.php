@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'plainview\\wordpress\\activity_monitor\\' => array($baseDir . '/include'),
-    'plainview\\sdk\\' => array($vendorDir . '/plainview/sdk'),
+    'plainview\\wordpress\\activity_monitor\\' => array($baseDir . '/src'),
+    'plainview\\sdk_pvam\\' => array($baseDir . '/src/sdk'),
 );

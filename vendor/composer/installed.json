@@ -1,16 +1,16 @@
 [
     {
-        "name": "plainview/sdk",
+        "name": "plainview/sdk_pvam",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/the-plainview/sdk.git",
+            "url": "https://github.com/the-plainview/sdk_pvam.git",
             "reference": "02900a3db9b1f27a8d1bee91a803674e025f1e93"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/the-plainview/sdk/zipball/02900a3db9b1f27a8d1bee91a803674e025f1e93",
+            "url": "https://api.github.com/repos/the-plainview/sdk_pvam/zipball/02900a3db9b1f27a8d1bee91a803674e025f1e93",
             "reference": "02900a3db9b1f27a8d1bee91a803674e025f1e93",
             "shasum": ""
         },
@@ -25,7 +25,7 @@
         "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "plainview\\sdk\\": "."
+                "plainview\\sdk_pvam_pvam\\": "."
             }
         },
         "notification-url": "https://packagist.org/downloads/",

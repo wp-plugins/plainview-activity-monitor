@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b452dc289c8cb1b5bb0a0bc1dde039ee",
+    "hash": "64b9f6629860ba40cc13aa83f1fd712f",
     "packages": [],
     "packages-dev": [
         {
@@ -30,7 +30,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "plainview\\sdk\\": "."
+                    "plainview\\sdk_pvam\\": "."
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

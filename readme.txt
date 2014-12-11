@@ -139,6 +139,11 @@ No. PHP 5.3 is no longer officially supported. It is time for your web host to u
 
 == Changelog ==
 
+= 20141211 =
+* New: Send To Log plugin added to plugin pack.
+* New: HTTP POST plugin added to plugin pack.
+* Code: SDK update.
+
 = 20141123 =
 * New hooks: activated_plugin and deactivated_plugin.
 * Code: Enable same action classes to report different hooks.
