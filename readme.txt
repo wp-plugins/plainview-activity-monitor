@@ -4,7 +4,7 @@ License: GPLv3
 Requires at least: 3.9
 Stable tag: trunk
 Tags: activity monitor, activities, monitor, security, ddos, brute force
-Tested up to: 4.0
+Tested up to: 4.2.2
 
 Plugin for PHP v5.4+ that monitors Wordpress actions for user activity on a blog or network.
 
@@ -138,6 +138,9 @@ Use the Wordpress support forum.
 No. PHP 5.3 is no longer officially supported. It is time for your web host to upgrade.
 
 == Changelog ==
+
+= 20150508 =
+* Fixed mysqli error.
 
 = 20141211 =
 * New: Send To Log plugin added to plugin pack.
