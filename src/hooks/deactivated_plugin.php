@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class deactivated_plugin
 	extends hook
 {
+	use categories\Plugins;
+
 	public function get_description()
 	{
 		return 'Deactivated a plugin.';

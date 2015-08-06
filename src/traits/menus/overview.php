@@ -12,13 +12,76 @@ use \plainview\sdk_pvam\collections\collection;
 trait overview
 {
 	/**
+		@brief		Return the script code neccessary to ajaxify the activities overview.
+		@since		2015-07-07 23:22:13
+	**/
+	public function get_overview_ajax( $filters_settings )
+	{
+		$r = sprintf( '<script type="text/javascript">var pvam_ajax_filters_settings = {
+			"css" : "%s/css/css.css",
+			"strings" : {
+				"error_saving_your_filter_settings" : "%s",
+				"modify_the_filter" : "%s",
+				"please_wait_while_the_dialog_loads" : "%s",
+				"saving" : "%s"
+			},
+			};
+			</script>',
+			$this->paths( 'url' ),
+			// Ajax filter settings popup: Error
+			$this->_( 'Error saving your filter settings' ),
+			// Ajax filter settings popup: Heading when editing the settings
+			$this->_( 'Modify the filter' ),
+			// Ajax filter settings popup
+			$this->_( 'Please wait while the dialog loads...' ),
+			// Ajax filter settings popup: Saving setting
+			$this->_( 'Saving...' )
+		);
+		$r .= sprintf( '<script type="text/javascript" src="%s/js/js.js"></script>', $this->paths( 'url' ) );
+
+		// Generate the filter settings here, since it is so much faster and more efficient to make form2 render the form.
+		$fsf = $this->form2();
+		$fsf->css_class( 'filter_settings' );
+
+		if ( $filters_settings->display_table_column( 'blog_id' ) )
+			$fsf->secondary_button( 'fs_blog_ids' )
+				->title_( 'Select which blogs you wish to view in the table and in the graph.' )
+				// Filter the shown blogs in the overview table filter settings.
+				->value_( 'Blogs' );
+
+		$fsf->secondary_button( 'fs_table_columns' )
+			->title_( 'Select which columns you wish to view in the table and in the graph.' )
+			// Filter the shown columns in the overview table filter settings.
+			->value_( 'Columns' );
+
+		$fsf->secondary_button( 'fs_hooks' )
+			->title_( 'Select which hooks you wish to view in the table and in the graph.' )
+			// Filter the shown hooks in the overview table filter settings.
+			->value_( 'Hooks' );
+
+		$fsf->secondary_button( 'fs_ips' )
+			->title_( 'Select which IPs you wish to view in the table and in the graph.' )
+			// Filter the shown IP addresses in the overview table filter settings.
+			->value_( 'IPs' );
+
+		$fsf->secondary_button( 'fs_user_ids' )
+			->title_( 'Select which users you wish to view in the table and in the graph.' )
+			// Filter the shown users in the overview table filter settings.
+			->value_( 'Users' );
+
+		$fsf->hidden();
+		$r .= $fsf;
+
+		return $r;
+	}
+	/**
 		@brief		Display activities.
 		@since		2014-05-03 20:22:31
 	**/
 	public function menu_activities_display( $list_activities )
 	{
 		$form = $this->form2();
-		$r = '';
+		$r = '<div class="pvam_overview_table">';
 		$table = $this->table();
 		$table->css_class( 'activity_monitor_activities' );
 
@@ -27,6 +90,10 @@ trait overview
 			->form( $form )
 			->add( $this->_( 'Delete' ), 'delete' )
 			->cb( $row );
+
+		$refresh_timeout = $this->get_site_option( 'refresh_timeout' );
+		if ( $refresh_timeout > 0 )
+			$table->set_attribute( 'data-refresh_timeout', $refresh_timeout );
 
 		if ( $form->is_posting() )
 		{
@@ -159,6 +226,10 @@ trait overview
 		$r .= $form->close_tag();
 		$r .= $page_links;
 
+		$r .= $this->get_overview_ajax( $filters_settings );
+
+		$r .= '</div>';		// pvam_overview_table
+
 		echo $r;
 	}
 
@@ -169,6 +240,8 @@ trait overview
 	public function menu_activity_filters()
 	{
 		$form = $this->form2();
+		$form->css_class( 'activity_filters' );
+
 		$r = $this->p_( 'The settings below will display only the activities that match the filter settings. The settings are saved per-user in the Wordpress user meta table.' );
 
 		$filters_settings = filters_settings::load();
@@ -455,13 +528,19 @@ trait overview
 		echo $r;
 	}
 
-	public function menu_overview_tabs()
+	public function menu_tabs()
 	{
 		$this->load_language();
 
+		if ( $this->is_network )
+			$show_admin_tabs = is_super_admin();
+		else
+			$show_admin_tabs = $this->user_has_roles( 'administrator' );
+
 		$tabs = $this->tabs();
 
-		if ( $this->is_network && is_super_admin() )
+		// Only admin on a network is allowed to see these activities.
+		if ( $this->is_network && $show_admin_tabs )
 			$tabs->tab( 'activity_global' )
 				->callback_this( 'menu_activity_global' )
 				->heading_( 'Activity on all blogs' )
@@ -476,9 +555,25 @@ trait overview
 			->callback_this( 'menu_activity_filters' )
 			->name_( 'Filters' );
 
+		if ( $show_admin_tabs )
+			$tabs->tab( 'hooks' )
+				->callback_this( 'menu_admin_hooks' )
+				->heading_( 'Logged hooks' )
+				->name_( 'Hooks' );
+
+		if ( $show_admin_tabs )
+			$tabs->tab( 'settings' )
+				->callback_this( 'menu_admin_settings' )
+				->name_( 'Settings' );
+
 		$tabs->tab( 'activity_tools' )
 			->callback_this( 'menu_activity_tools' )
 			->name_( 'Tools' );
+
+		if ( $show_admin_tabs )
+			$tabs->tab( 'uninstall' )
+				->callback_this( 'admin_uninstall' )
+				->name_( 'Uninstall' );
 
 		// Allow other plugins to add to our tabs.
 		$action = new \plainview\wordpress\activity_monitor\actions\admin_menu_tabs;

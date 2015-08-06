@@ -19,11 +19,14 @@ trait base
 
 	public function admin_menu()
 	{
-		if ( function_exists( 'is_super_admin' ) && ! is_super_admin() )
-			return;
-
-		if ( ! $this->role_at_least( 'administrator' ) )
-			return;
+		if ( $this->is_network )
+		{
+			if ( ! is_super_admin() )
+				return;
+		}
+		else
+			if ( ! $this->user_has_roles( 'administrator' ) )
+				return;
 
 		$this->load_language();
 
@@ -32,16 +35,7 @@ trait base
 			$this->_( 'Activity monitor' ),
 			'manage_options',
 			'plainview_activity_monitor',
-			[ &$this, 'menu_overview_tabs' ]
-		);
-
-		$this->add_submenu_page(
-			'plainview_activity_monitor',
-			$this->_( 'Admin settings' ),
-			$this->_( 'Admin settings' ),
-			'manage_options',
-			'plainview_activity_monitor_admin',
-			[ &$this, 'menu_admin_tabs' ]
+			[ &$this, 'menu_tabs' ]
 		);
 
 		$this->add_submenu_page(

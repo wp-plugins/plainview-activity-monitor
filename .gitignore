@@ -1,6 +1,6 @@
 # Composer stuff
 composer.lock
-vendor
 
 # The SDK should not be accepted as a git.
 src/sdk/.git
+

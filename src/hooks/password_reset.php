@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class password_reset
 	extends hook
 {
+	use categories\Users;
+
 	public function get_description()
 	{
 		return 'Reset the password.';

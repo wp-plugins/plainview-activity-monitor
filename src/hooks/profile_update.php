@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class profile_update
 	extends hook
 {
+	use categories\Users;
+
 	public function get_description()
 	{
 		return 'Profile update.';

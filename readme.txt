@@ -4,7 +4,7 @@ License: GPLv3
 Requires at least: 3.9
 Stable tag: trunk
 Tags: activity monitor, activities, monitor, security, ddos, brute force
-Tested up to: 4.0
+Tested up to: 4.2.2
 
 Plugin for PHP v5.4+ that monitors Wordpress actions for user activity on a blog or network.
 
@@ -46,6 +46,10 @@ The logged information consists of:
 The activities can then be shown in global table showing activities on the whole network, or locally for just the blog you are currently viewing.
 
 The activites can also be filtered so that only specific blogs / hooks / IPs / users are displayed.
+
+= git =
+
+The <a href="https://github.com/the-plainview/activity_monitor">Activity Monitor has a github</a>.
 
 = Plugin Pack =
 
@@ -138,6 +142,15 @@ Use the Wordpress support forum.
 No. PHP 5.3 is no longer officially supported. It is time for your web host to upgrade.
 
 == Changelog ==
+
+= 20150806 =
+* Activities table now autorefreshes. There is an autorefresh setting.
+* Filters can be modified via buttons on the same page as the activities table.
+* Hook grouping.
+* Code: git moved to https://bitbucket.org/edward_electric/activity-monitor
+
+= 20150508 =
+* Fixed mysqli error.
 
 = 20141211 =
 * New: Send To Log plugin added to plugin pack.
