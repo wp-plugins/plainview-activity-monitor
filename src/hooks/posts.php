@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 abstract class posts
 	extends hook
 {
+	use categories\Posts;
+
 	/**
 		@brief		Prehandles the logging for post hooks.
 		@see		log_post()

@@ -15,9 +15,15 @@ trait admin
 	public function menu_admin_hooks()
 	{
 		$form = $this->form2();
-		$r = '';
+		$r = '<style>
+			table.plugins tr.hook_category
+			{
+				background-color: #ddd;
+				font-weight: bold;
+			}
+		</style>';
 
-		$r = $this->p_( 'Select the actions you wish to store in the database. All the below actions, whether they are stored or not, are detectable and usable by Activity Monitor plugins.' );
+		$r .= $this->p_( 'Select the actions you wish to store in the database. All the below actions, whether they are stored or not, are detectable and usable by Activity Monitor plugins.' );
 
 		$action = new \plainview\wordpress\activity_monitor\actions\manifest_hooks;
 		$action->execute();
@@ -50,7 +56,7 @@ trait admin
 			$this->update_site_option( 'logged_hooks', $logged_hooks );
 
 		$table = $this->table();
-		$table->css_class( 'plugins' );		// We want to use the coloring.
+		$table->css_class( 'plugins' );		// We want to use the coloring from the plugins table.
 		$row = $table->head()->row();
 		$table->bulk_actions()
 			->form( $form )
@@ -91,15 +97,34 @@ trait admin
 			$this->message_( 'The list of logged hooks has been saved.' );
 		}
 
-		foreach( $action->hooks as $hook )
+		$old_category = 'xxx';
+		foreach( $action->by_category() as $hook )
 		{
+			if ( $hook->get_category() != $old_category )
+			{
+				$old_category = $hook->get_category();
+				$row = $table->body()->row();
+				$row->css_class( 'hook_category' );
+				// Remove the underscore.
+				$row->th()->colspan( 5 )->text( str_replace( '_', ' ', $old_category ) );
+			}
 			$row = $table->body()->row();
+
 			$bulk_id = $hook->get_id();
-			$table->bulk_actions()->cb( $row, $bulk_id );
-			$row->td( 'hook' )
-				->css_class( 'plugin-title' )
-				->text( $hook->get_hook() )
+			$cb = $table->bulk_actions()->cb( $row, $bulk_id );
+
+			$td = $row->td( 'hook' );
+
+			$td->css_class( 'plugin-title' )
 				->title( $hook->get_class() );
+
+			// Assemble a label.
+			$label = new \plainview\sdk_pvam\html\div();
+			$label->tag = 'label';
+			$label->set_attribute( 'for', $cb->get_id() );
+			$label->content = $hook->get_hook();
+
+			$td->text( $label );
 
 			if ( isset( $logged_hooks[ $hook->get_id() ]  ) )
 				$row->css_class( 'active' );
@@ -138,15 +163,26 @@ trait admin
 	public function menu_admin_settings()
 	{
 		$form = $this->form2();
+		$form->css_class( 'plainview_form_auto_tabs' );
 		$r = '';
 
-		$fs = $form->fieldset( 'fs_database' );
-		$fs->legend->label_( 'Database' );
+		// DATABASE-------------------------------------------------------------
+
+		$fs = $form->fieldset( 'fs_activities' );
+		$fs->legend->label_( 'Activities' );
 
 		// Get an activity count.
 		$list_activities = new list_activities;
 		$list_activities->count = true;
 		$list_activities->execute();
+
+		$fs->number( 'refresh_timeout' )
+			->description_( 'How many minutes to wait before periodically refreshing the activities overview table. Set to 0 to disable.' )
+			->label_( 'Autorefresh' )
+			->min( 0 )
+			->required()
+			->size( 5 )
+			->value( $this->get_site_option( 'refresh_timeout' ) );
 
 		$fs->number( 'activities_in_database' )
 			->description_( 'How many activities to store in the database. There are currently %s activities stored.', $list_activities->result )
@@ -155,8 +191,15 @@ trait admin
 			->required()
 			->size( 5 )
 			->value( $this->get_site_option( 'activities_in_database' ) );
+
 		$fs->markup( 'mu_activities_in_database' )
 			->p_( 'This value is dependent on how much activity there is on your blog and how much history you wish to keep. Updating this value cleans the database. There is also a 5% chance that the database will be cleaned up when a new activity is logged.' );
+
+		// DEBUG----------------------------------------------------------------
+
+		$this->add_debug_settings_to_form( $form );
+
+		// DISPLAY--------------------------------------------------------------
 
 		$fs = $form->fieldset( 'fs_display' );
 		$fs->legend->label_( 'Display' );
@@ -169,7 +212,7 @@ trait admin
 			->size( 5, 5 )
 			->value( $this->get_site_option( 'per_page' ) );
 
-		$this->add_debug_settings_to_form( $form );
+		// ---------------------------------------------------------------------
 
 		$form->primary_button( 'save' )
 			->value_( 'Save settings' );
@@ -190,6 +233,7 @@ trait admin
 				$this->update_site_option( 'per_page', $form->input( 'per_page' )->get_filtered_post_value() );
 				$activities_in_database = $form->input( 'activities_in_database' )->get_filtered_post_value();
 				$this->update_site_option( 'activities_in_database', $activities_in_database );
+				$this->update_site_option( 'refresh_timeout', $form->input( 'refresh_timeout' )->get_filtered_post_value() );
 
 				$prune_activities = new prune_activities;
 				$prune_activities->count = $activities_in_database;
@@ -214,27 +258,5 @@ trait admin
 		);
 
 		echo $r;
-	}
-
-	public function menu_admin_tabs()
-	{
-		$this->load_language();
-
-		$tabs = $this->tabs();
-
-		$tabs->tab( 'hooks' )
-			->callback_this( 'menu_admin_hooks' )
-			->heading_( 'Logged hooks' )
-			->name_( 'Hooks' );
-
-		$tabs->tab( 'settings' )
-			->callback_this( 'menu_admin_settings' )
-			->name_( 'Settings' );
-
-		$tabs->tab( 'uninstall' )
-			->callback_this( 'admin_uninstall' )
-			->name_( 'Uninstall' );
-
-		echo $tabs;
 	}
 }

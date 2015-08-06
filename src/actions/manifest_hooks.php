@@ -25,6 +25,18 @@ class manifest_hooks
 	}
 
 	/**
+		@brief		Return a collectin of hooks grouped by category.
+		@since		2015-07-05 20:46:24
+	**/
+	public function by_category()
+	{
+		return $this->hooks->sort_by( function( $hook )
+		{
+			return $hook->get_category() . $hook->get_hook() . $hook->get_vendor() . $hook->get_description();
+		});
+	}
+
+	/**
 		@brief		Sort the hooks by name and vendor.
 		@since		2014-05-03 09:22:04
 	**/

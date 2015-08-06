@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class admin_head
 	extends hook
 {
+	use categories\Page_Views;
+
 	public function get_description()
 	{
 		return 'Admin page was viewed.';

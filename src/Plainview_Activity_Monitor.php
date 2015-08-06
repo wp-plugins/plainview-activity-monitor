@@ -99,6 +99,15 @@ class Plainview_Activity_Monitor
 		return $this->__cache;
 	}
 
+	/**
+		@brief		Return the standard collection.
+		@since		2015-07-25 10:55:22
+	**/
+	public function collection()
+	{
+		return new collection();
+	}
+
 	public function site_options()
 	{
 		return array_merge( [
@@ -108,6 +117,7 @@ class Plainview_Activity_Monitor
 			'logged_hooks' => [],								// Array of activity class names.
 			'activities_in_database' => 1000000,				// How many activities to keep in the database.
 			'per_page' => 100,									// How many items to show per table page.
+			'refresh_timeout' => 5,								// Wait 5 minutes before autorefreshing the activites table.
 		], parent::site_options() );
 	}
 

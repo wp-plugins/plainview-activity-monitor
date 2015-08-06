@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wp_login
 	extends hook
 {
+	use categories\Users;
+
 	public function get_description()
 	{
 		return 'User logged in.';

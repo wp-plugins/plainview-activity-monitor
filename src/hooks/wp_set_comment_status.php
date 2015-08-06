@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wp_set_comment_status
 	extends hook
 {
+	use categories\Comments;
+
 	public function get_description()
 	{
 		return 'Comment approved, reset, deleted, etc.';

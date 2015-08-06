@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wp_head
 	extends hook
 {
+	use categories\Page_Views;
+
 	public function get_description()
 	{
 		return 'A page was visited in the front-end. Does not work if the pages are cached.';

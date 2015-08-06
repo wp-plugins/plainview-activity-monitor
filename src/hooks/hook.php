@@ -62,6 +62,20 @@ class hook
 	}
 
 	/**
+		@brief		Return the hook's category.
+		@details	The category is a word or short phrase.
+
+		delete_post, publish_to_trash and draft_to_publish could have the category "Posts".
+		user_register, wpmu_delete_user could have the category "Users".
+
+		@since		2015-07-05 20:39:10
+	**/
+	public function get_category()
+	{
+		return Plainview_Activity_Monitor()->_( 'Uncategorized' );
+	}
+
+	/**
 		@brief		Return the basename of this class.
 		@since		2014-11-22 12:17:53
 	**/

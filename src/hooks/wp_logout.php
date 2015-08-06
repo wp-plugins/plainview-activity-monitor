@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class wp_logout
 	extends hook
 {
+	use categories\Users;
+
 	public function get_description()
 	{
 		return 'User logged out.';

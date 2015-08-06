@@ -47,6 +47,10 @@ The activities can then be shown in global table showing activities on the whole
 
 The activites can also be filtered so that only specific blogs / hooks / IPs / users are displayed.
 
+= git =
+
+The <a href="https://github.com/the-plainview/activity_monitor">Activity Monitor has a github</a>.
+
 = Plugin Pack =
 
 The <a href="http://plugins.plainview.se/plainview-activity-monitor-plugin-pack/" title="Activity Monitor Plugin Packs's page on the web"><em>Activity Monitor Plugin Pack</em></a> is an actively maintained collection of plugins that expand the functionality of Activity Monitor.
@@ -138,6 +142,12 @@ Use the Wordpress support forum.
 No. PHP 5.3 is no longer officially supported. It is time for your web host to upgrade.
 
 == Changelog ==
+
+= 20150806 =
+* Activities table now autorefreshes. There is an autorefresh setting.
+* Filters can be modified via buttons on the same page as the activities table.
+* Hook grouping.
+* Code: git moved to https://bitbucket.org/edward_electric/activity-monitor
 
 = 20150508 =
 * Fixed mysqli error.

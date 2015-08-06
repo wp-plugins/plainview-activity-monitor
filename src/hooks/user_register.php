@@ -9,6 +9,8 @@ namespace plainview\wordpress\activity_monitor\hooks;
 class user_register
 	extends hook
 {
+	use categories\Users;
+
 	public function get_description()
 	{
 		return 'User registration.';
